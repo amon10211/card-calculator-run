@@ -8,6 +8,12 @@ const cardValueMap = {
     '10': 0, 'J': 0, 'Q': 0, 'K': 0
 };
 
+// 輔助函式：將牌面轉為點數（補回這段）
+function getVal(idx) {
+    const card = currentRoundCards[idx];
+    return (!card || card === "無") ? 0 : cardValueMap[card];
+}
+
 function inputCard(val) {
     if (inputStep >= 6) return;
     currentRoundCards[inputStep] = val;
@@ -29,7 +35,7 @@ function handleSkipOrSettle() {
 function finalizeRound() {
     if (inputStep < 4) return;
 
-    // 1. 計算當前這局的點數與實際勝負
+    // 1. 計算當前局點數
     const pPoints = (getVal(0) + getVal(1) + getVal(4)) % 10;
     const bPoints = (getVal(2) + getVal(3) + getVal(5)) % 10;
     
@@ -37,18 +43,18 @@ function finalizeRound() {
     if (pPoints > bPoints) actualResult = "閒";
     else if (bPoints > pPoints) actualResult = "莊";
 
-    // 2. 錯位配對紀錄：把「前一局建議」與「這一局結果」配對
+    // 2. 紀錄配對 (上一局建議 vs 這一局結果)
     if (activeBet !== null) {
         allHistoryData.push({
             roundNum: allHistoryData.length + 1,
             recommendation: activeBet.side,
             result: actualResult,
             isCorrect: activeBet.side === actualResult,
-            isTie: actualResult === "和" // 新增「和」的判定標記
+            isTie: actualResult === "和"
         });
     }
 
-    // 3. 計算「下一次」的建議
+    // 3. 計算下一局建議
     const runValue = pPoints + bPoints;
     let initialSide = (runValue >= 1 && runValue <= 9) ? "閒" : "莊";
     
@@ -63,17 +69,16 @@ function finalizeRound() {
     
     const nextSide = isFlipped ? (initialSide === "閒" ? "莊" : "閒") : initialSide;
 
-    // 4. 更新 UI 建議顯示
+    // 4. 更新 UI 與重置
     activeBet = { side: nextSide };
     const recElement = document.getElementById('recommendation');
     recElement.innerText = `下注${nextSide} ${nextSide === '閒' ? '🔵' : '🔴'}`;
     recElement.className = nextSide === '閒' ? 'text-p' : 'text-b';
 
-    updateHistoryUI();
+    updateHistoryUI(); 
     resetRound();
 }
 
-// 渲染歷史紀錄
 function updateHistoryUI() {
     const list = document.getElementById('historyList');
     list.innerHTML = "";
@@ -84,16 +89,15 @@ function updateHistoryUI() {
         const colorClass = data.recommendation === '閒' ? 'pred-p' : 'pred-b';
         const emoji = data.recommendation === '閒' ? '🔵' : '🔴';
         
-        // 判定狀態標籤的文字與顏色
         let statusText = "● 不準";
-        let statusColor = "#e74c3c"; // 預設紅色
+        let statusColor = "#e74c3c"; 
 
         if (data.isTie) {
             statusText = "● 和";
-            statusColor = "#95a5a6"; // 中性灰色
+            statusColor = "#95a5a6"; 
         } else if (data.isCorrect) {
             statusText = "● 準";
-            statusColor = "#2ecc71"; // 綠色
+            statusColor = "#2ecc71"; 
         }
 
         div.className = 'history-item';
@@ -109,12 +113,6 @@ function updateHistoryUI() {
         list.appendChild(div);
     }
     document.getElementById('count').innerText = allHistoryData.length;
-    analyzeSystemTrend();
-}
-
-function getVal(idx) {
-    const card = currentRoundCards[idx];
-    return (!card || card === "無") ? 0 : cardValueMap[card];
 }
 
 function renderSlots() {
@@ -149,62 +147,4 @@ function clearHistory() {
         document.getElementById('recommendation').className = "";
         updateHistoryUI();
     }
-}
-
-function analyzeSystemTrend() {
-    // 排除和局，只抓取有準或不準的紀錄
-    const validHistory = allHistoryData.filter(d => !d.isTie);
-    const statusEl = document.getElementById('systemStatus');
-    const expEl = document.getElementById('expectancy');
-
-    if (validHistory.length < 3) {
-        statusEl.innerText = "樣本不足";
-        return;
-    }
-
-    // 抓取最近 5 局的結果
-    const last5 = validHistory.slice(-5);
-    const winCount = last5.filter(d => d.isCorrect).length;
-    const winRate = (winCount / last5.length) * 100;
-
-    // 判斷連勝或連敗
-    let streak = 0;
-    const lastResult = last5[last5.length - 1].isCorrect;
-    for (let i = last5.length - 1; i >= 0; i--) {
-        if (last5[i].isCorrect === lastResult) streak++;
-        else break;
-    }
-
-    // --- 期望值判斷邏輯 ---
-    let statusText = "";
-    let expectancyText = "";
-    let expClass = "";
-
-    if (winRate >= 60) {
-        statusText = "系統正熱 (Hot)";
-        if (streak >= 3) {
-            expectancyText = "高 (建議跟隨)";
-            expClass = "high-exp";
-        } else {
-            expectancyText = "中 (穩定)";
-        }
-    } else if (winRate <= 40) {
-        statusText = "系統冷卻 (Cold)";
-        expectancyText = "低 (建議觀望)";
-        expClass = "low-exp";
-    } else {
-        statusText = "震盪期 (Stable)";
-        expectancyText = "中";
-    }
-
-    // 特殊邏輯：連錯 2 次後，期望值通常會開始反轉
-    if (!lastResult && streak >= 2) {
-        statusText = "連續失準";
-        expectancyText = "極低 (嚴禁下注)";
-        expClass = "low-exp";
-    }
-
-    statusEl.innerText = statusText;
-    expEl.innerText = expectancyText;
-    expEl.className = expClass;
 }
