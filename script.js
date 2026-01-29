@@ -15,11 +15,20 @@ function getVal(idx) {
 }
 
 function inputCard(val) {
-    if (inputStep >= 6) return;
+    // 關鍵修改：如果目前已經是第 6 張（或以上），代表這一下點擊是屬於「下一局」的
+    if (inputStep >= 6) {
+        resetRound(); 
+    }
+    
     currentRoundCards[inputStep] = val;
     inputStep++;
     renderSlots();
-    if (inputStep === 6) setTimeout(finalizeRound, 300);
+
+    // 當填滿 6 張時觸發結算
+    if (inputStep === 6) {
+        // 使用 setTimeout 是為了讓使用者能看到最後一張牌填入的視覺效果
+        setTimeout(finalizeRound, 300);
+    }
 }
 
 function handleSkipOrSettle() {
