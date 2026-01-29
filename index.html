@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂計算系統 Pro V3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-display">
+            <div class="suggestion-box">
+                建議：<span id="recommendation">—</span>
+            </div>
+
+            <div class="trend-box">
+                系統狀態：<span id="systemStatus">偵測中...</span> | 
+                預期強度：<span id="expectancy">—</span>
+            </div>
+
+            <div class="card-slots">
+                <div class="row top-row">
+                    <div class="slot" data-label="閒1"></div>
+                    <div class="slot" data-label="閒2"></div>
+                    <div class="slot" data-label="莊1"></div>
+                    <div class="slot" data-label="莊2"></div>
+                </div>
+                <div class="row bottom-row">
+                    <div class="slot" data-label="閒3"></div>
+                    <div class="slot" data-label="莊3"></div>
+                </div>
+            </div>
+
+            <div class="keypad">
+                <button class="key" onclick="inputCard('A')">A</button>
+                <button class="key" onclick="inputCard('2')">2</button>
+                <button class="key" onclick="inputCard('3')">3</button>
+                <button class="key" onclick="inputCard('4')">4</button>
+                <button class="key" onclick="inputCard('5')">5</button>
+                <button class="key" onclick="inputCard('6')">6</button>
+                <button class="key" onclick="inputCard('7')">7</button>
+                <button class="key" onclick="inputCard('8')">8</button>
+                <button class="key" onclick="inputCard('9')">9</button>
+                <button class="key" onclick="inputCard('10')">10</button>
+                <button class="key" onclick="inputCard('J')">J</button>
+                <button class="key" onclick="inputCard('Q')">Q</button>
+                <button class="key" onclick="inputCard('K')">K</button>
+            </div>
+
+            <div class="controls">
+                <button class="f-btn highlight" id="skipSettleBtn" onclick="handleSkipOrSettle()">不補牌</button>
+                <button class="f-btn" onclick="undo()">上一步</button>
+                <button class="f-btn" onclick="resetRound()">重置</button>
+                <button class="f-btn">返回首頁</button>
+            </div>
+        </div>
+
+        <div class="history-panel">
+            <div class="history-header">
+                牌局紀錄 (<span id="count">0</span>)
+                <button onclick="clearHistory()">清空</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

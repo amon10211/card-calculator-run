@@ -1,0 +1,205 @@
+:root {
+    --bg-dark: #121417;
+    --card-bg: #1e2126;
+    --accent: #d4af37;
+    --text-main: #ffffff;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    font-family: "Microsoft JhengHei", sans-serif;
+}
+
+.container {
+    display: flex;
+    width: 1000px;
+    padding: 20px;
+    gap: 20px;
+}
+
+.trend-box {
+    background: #121417;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #888;
+    border: 1px dashed #444;
+    text-align: center;
+}
+#expectancy { font-weight: bold; }
+.high-exp { color: #2ecc71; } /* 高期望值用綠色 */
+.low-exp { color: #e74c3c; }  /* 低期望值用紅色 */
+
+/* 主顯示區 */
+.main-display {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 建議文字顏色 */
+.text-p { color: #3498db !important; } /* 藍色 */
+.text-b { color: #e74c3c !important; } /* 紅色 */
+
+.suggestion-box {
+    background: #1c1f24;
+    padding: 25px;
+    border-radius: 15px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 改為置中顯示 */
+    border: 1px solid #333;
+    font-weight: bold;
+    min-height: 40px;
+}
+
+/* 建議文字顏色 */
+.text-p { color: #3498db !important; }
+.text-b { color: #e74c3c !important; }
+
+.history-item {
+    background: #25282e;
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #444;
+}
+
+.history-item div {
+    margin-bottom: 5px;
+}
+
+/* 歷史紀錄內的顏色 */
+.pred-p { color: #3498db; }
+.pred-b { color: #e74c3c; }
+
+/* 卡片槽 */
+.card-slots {
+    background: #25282e;
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.row { display: flex; gap: 15px; }
+
+.bottom-row {
+    margin-top: 10px; /* 確保閒3莊3不會撞到上面 */
+}
+
+.slot {
+    width: 70px;
+    height: 100px;
+    background: #181a1e;
+    border: 2px solid #3d424a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: relative;
+}
+
+/* 調整字體位置，避免被牌遮到 */
+.slot::after {
+    content: attr(data-label);
+    position: absolute;
+    top: -25px; /* 把字往上移，移出牌位範圍 */
+    font-size: 12px;
+    color: #aaa;
+    width: 100%;
+    text-align: center;
+}
+
+.slot.active { border-color: #d4af37; box-shadow: 0 0 10px rgba(212,175,55,0.5); }
+.slot.skipped { background: #2a2a2a; border-style: dashed; color: #444; }
+
+.f-btn.highlight {
+    background: #b8962e;
+    color: #000;
+}
+
+/* 鍵盤 */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.key {
+    background: #343a42;
+    border: none;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.key:active { background: #555; }
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.f-btn {
+    background: #4a515a;
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* 歷史紀錄 */
+.history-panel {
+    flex: 1;
+    background: #1c1f24;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-header {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+.history-list {
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.history-item {
+    background: #25282e;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.tag {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 12px;
+}
+
+.tag.correct { color: #28a745; }
+.tag.wrong { color: #dc3545; }
