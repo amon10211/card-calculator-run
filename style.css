@@ -203,3 +203,33 @@ body {
 
 .tag.correct { color: #28a745; }
 .tag.wrong { color: #dc3545; }
+
+.stats-panel {
+    background: #1a1d21;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+}
+.card-counters {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 15px;
+}
+.counter-box {
+    background: #121417;
+    border: 1px solid #444;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.counter-box .val { color: #f1c40f; font-weight: bold; display: block; }
+
+.ratio-bars { display: flex; flex-direction: column; gap: 10px; }
+.progress-bg { background: #333; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+.progress-fill { height: 100%; width: 0%; transition: width 0.3s ease; }
+.small-color { background: #3498db; } /* 藍色 */
+.big-color { background: #e74c3c; }   /* 紅色 */
+.zero-color { background: #95a5a6; }  /* 灰色 */

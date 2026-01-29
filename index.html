@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跑牌值計算器 Pro V3</title>
-    <link rel="icon" href="icon.png" type="image/png">
+    <title>跑牌值計算器 Pro V3 - 數據監控版</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
+        <div class="stats-panel">
+            <h3>牌組消耗監測</h3>
+            <div class="card-counters" id="cardCounters">
+                </div>
+            <div class="ratio-bars">
+                <div class="bar-item">
+                    <div class="bar-info"><span>小牌 (A-5)</span> <span id="smallPercent">0%</span></div>
+                    <div class="progress-bg"><div id="smallBar" class="progress-fill small-color"></div></div>
+                </div>
+                <div class="bar-item">
+                    <div class="bar-info"><span>大牌 (6-9)</span> <span id="bigPercent">0%</span></div>
+                    <div class="progress-bg"><div id="bigBar" class="progress-fill big-color"></div></div>
+                </div>
+                <div class="bar-item">
+                    <div class="bar-info"><span>零點 (10-K)</span> <span id="zeroPercent">0%</span></div>
+                    <div class="progress-bg"><div id="zeroBar" class="progress-fill zero-color"></div></div>
+                </div>
+            </div>
+        </div>
+
         <div class="main-display">
             <div class="suggestion-box">
                 建議：<span id="recommendation">—</span>
@@ -46,8 +65,8 @@
             <div class="controls">
                 <button class="f-btn highlight" id="skipSettleBtn" onclick="handleSkipOrSettle()">不補牌</button>
                 <button class="f-btn" onclick="undo()">上一步</button>
-                <button class="f-btn" onclick="resetRound()">重置</button>
-                <button class="f-btn">返回首頁</button>
+                <button class="f-btn" onclick="resetRound()">重置單局</button>
+                <button class="f-btn" onclick="location.reload()">重新開始</button>
             </div>
         </div>
 
@@ -61,4 +80,4 @@
     </div>
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
